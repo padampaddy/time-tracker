@@ -19,6 +19,7 @@ import (
 	"fyne.io/fyne/v2/storage"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"github.com/time-tracker/v2/assets"
 	"github.com/time-tracker/v2/core"
 	"github.com/time-tracker/v2/internal/types"
 )
@@ -60,9 +61,9 @@ func NewTaskWindow(a fyne.App) *TaskWindowUI {
 	ui.Win.Resize(fyne.NewSize(400, 560))
 	ui.Win.SetFixedSize(true)
 
-	iconResource, err := fyne.LoadResourceFromPath("assets/clock.png")
-	if err != nil {
-		log.Printf("Error loading icon: %v", err)
+	iconResource := assets.GetClockResource()
+	if iconResource == nil {
+		log.Printf("Error loading icon from embedded resources")
 	} else {
 		ui.Win.SetIcon(iconResource)
 	}
@@ -418,9 +419,9 @@ func (ui *TaskWindowUI) setupSystemTray() {
 		menu := fyne.NewMenu("Time Tracker", showMenuItem)
 		desk.SetSystemTrayMenu(menu)
 
-		iconResource, err := fyne.LoadResourceFromPath("assets/clock.png")
-		if err != nil {
-			log.Printf("Error loading system tray icon: %v", err)
+		iconResource := assets.GetClockResource()
+		if iconResource == nil {
+			log.Printf("Error loading system tray icon from embedded resources")
 		} else {
 			desk.SetSystemTrayIcon(iconResource)
 		}

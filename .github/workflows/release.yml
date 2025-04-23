@@ -14,13 +14,13 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            output: rn-builder-linux
+            output: go-tracker-linux
             goos: linux
           - os: windows-latest
-            output: rn-builder-windows.exe
+            output: go-tracker.exe
             goos: windows
           - os: macos-latest
-            output: rn-builder-macos
+            output: go-tracker-macos
             goos: darwin
     
     runs-on: ${{ matrix.os }}
@@ -78,7 +78,7 @@ jobs:
         Write-Host "gcc version:"
         gcc --version
         Write-Host "Building..."
-        go build -tags gl -o ${{ matrix.output }}
+        go build -ldflags -H=windowsgui -tags gl -o ${{ matrix.output }}
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4

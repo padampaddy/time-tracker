@@ -30,31 +30,18 @@ func NewTaskService() *TaskService {
 
 // GetUserTasks fetches all tasks for the authenticated user
 func (s *TaskService) GetUserTasks() ([]types.Task, error) {
-	// Make the API call and get the raw response
-	url := "/api/tasks/user"
-	req, err := s.apiClient.prepareRequest("GET", url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to prepare request: %w", err)
-	}
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	response, err := s.apiClient.CallAPI("/api/tasks/user", "GET", nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch tasks: %w", err)
 	}
-	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	jsonData, err := json.Marshal(response)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, fmt.Errorf("API call failed with status: %s", resp.Status)
+		return nil, fmt.Errorf("failed to marshal response: %w", err)
 	}
 
 	var tasks []types.Task
-	if err := json.Unmarshal(body, &tasks); err != nil {
+	if err := json.Unmarshal(jsonData, &tasks); err != nil {
 		return nil, fmt.Errorf("failed to parse task data: %w", err)
 	}
 

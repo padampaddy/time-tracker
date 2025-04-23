@@ -8,6 +8,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"github.com/time-tracker/v2/assets"
 	"github.com/time-tracker/v2/services"
 	"github.com/time-tracker/v2/ui"
 )
@@ -78,12 +79,14 @@ func main() {
 	// Initialize the Fyne application
 	myApp := app.New()
 
-	iconPath := filepath.Join("assets", "clock.png")
-	iconData, err := os.ReadFile(iconPath)
-	if err != nil {
-		log.Fatalf("Failed to load icon: %v", err)
+	// Set the application icon using the embedded resource
+	iconResource := assets.GetClockResource()
+	if iconResource == nil {
+		log.Println("Failed to load icon from embedded resources")
+	} else {
+		myApp.SetIcon(iconResource)
 	}
-	myApp.SetIcon(fyne.NewStaticResource("icon", iconData))
+
 	// Initialize the authentication service
 	// Assuming NewAuthService() exists and is correctly implemented
 	authSvc := services.NewAuthService() // You might need to pass config here
