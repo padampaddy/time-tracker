@@ -1,0 +1,3357 @@
+openapi: 3.0.3
+info:
+  title: Time Logger API
+  version: 1.0.0
+  description: Project Management Application using Django REST Framework
+paths:
+  /api/add_employee:
+    post:
+      operationId: api_add_employee_create
+      summary: Register User
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/all_employees:
+    get:
+      operationId: api_all_employees_list
+      summary: Get All Users
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/all_images:
+    get:
+      operationId: api_all_images_list
+      summary: Get ScreenShot
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScreenShot'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/applied_leaves:
+    get:
+      operationId: api_applied_leaves_list
+      summary: Get All Leaves
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/approve_leave/{id}:
+    patch:
+      operationId: api_approve_leave_partial_update
+      summary: Update  Leaves
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/available_leaves:
+    get:
+      operationId: api_available_leaves_list
+      summary: Get Available Leaves By User
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaveCount'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/bank_detail/{id}:
+    post:
+      operationId: api_bank_detail_create
+      description: |-
+        Add bank details for an employee.
+
+        Args:
+            request: The request object.
+            id: The id of the employee for which to add bank details.
+
+        Returns:
+            A response object containing the added bank details.
+      summary: Add Bank Details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqBankDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqBankDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqBankDetail'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankDetail'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    put:
+      operationId: api_bank_detail_update
+      description: |-
+        Add bank details for an employee.
+
+        Args:
+            request: The request object.
+            id: The id of the employee for which to add bank details.
+
+        Returns:
+            A response object containing the added bank details.
+      summary: Update Bank Detail
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqBankDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqBankDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqBankDetail'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankDetail'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/change_password:
+    patch:
+      operationId: api_change_password_partial_update
+      summary: Change Password
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePassword'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/comment/{comment_id}:
+    put:
+      operationId: api_comment_update
+      summary: Update Comment
+      parameters:
+      - in: path
+        name: comment_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Comments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqComment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqComment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqComment'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/comment/delete/{comment_id}:
+    delete:
+      operationId: api_comment_delete_destroy
+      summary: Delete Comment
+      parameters:
+      - in: path
+        name: comment_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Comments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/comment/image/{comment_id}:
+    delete:
+      operationId: api_comment_image_destroy
+      summary: Delete Comment Image
+      parameters:
+      - in: path
+        name: comment_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Comments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/comments/{task_id}:
+    get:
+      operationId: api_comments_retrieve
+      summary: Get Comment
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Comments
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    post:
+      operationId: api_comments_create
+      summary: Create Comment
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Comments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqComment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqComment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqComment'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/employee:
+    get:
+      operationId: api_employee_retrieve
+      summary: Get Employee
+      tags:
+      - Employee
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    put:
+      operationId: api_employee_update
+      summary: Update Employee
+      tags:
+      - Employee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/employee/{id}:
+    put:
+      operationId: api_employee_update_2
+      description: |-
+        Update an employee.
+
+        Args:
+        - employee_id: The ID of the employee to update.
+        - request: The request object containing the updated employee data.
+
+        Returns:
+        - A response object containing the updated employee data.
+      summary: Update Employee
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqEmployee'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    delete:
+      operationId: api_employee_destroy
+      description: |-
+        Delete an employee.
+
+        Args:
+        - employee_id: The ID of the employee to delete.
+
+        Returns:
+        - A response object containing a success message if the employee was deleted successfully.
+      summary: Delete Employee
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/employees:
+    get:
+      operationId: api_employees_list
+      summary: Get All Employee
+      tags:
+      - Employee
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/favorite/{project_id}:
+    post:
+      operationId: api_favorite_create
+      summary: Add Favorite Project
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    delete:
+      operationId: api_favorite_destroy
+      summary: Remove Favorite Project
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/forgot_password:
+    post:
+      operationId: api_forgot_password_create
+      summary: Forgot Password
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ForgotPassword'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/get_screenshots_data/{start_date}/{end_date}:
+    get:
+      operationId: api_get_screenshots_data_list
+      summary: Get ScreenShot
+      parameters:
+      - in: path
+        name: end_date
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: start_date
+        schema:
+          type: string
+        required: true
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResWorkReport'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/get_workreport_data/{start_date}/{end_date}:
+    get:
+      operationId: api_get_workreport_data_list
+      summary: Get Work Report
+      parameters:
+      - in: path
+        name: end_date
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: start_date
+        schema:
+          type: string
+        required: true
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResWorkReport'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/ip_address:
+    get:
+      operationId: api_ip_address_list
+      summary: Get All Ip Address
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IpAddressResponse'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    post:
+      operationId: api_ip_address_create
+      summary: Add Ip Address
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IpAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IpAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IpAddress'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/ip_address/{id}:
+    put:
+      operationId: api_ip_address_update
+      summary: Update Ip Address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IpAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IpAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IpAddress'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/ip_address/delete/{id}:
+    delete:
+      operationId: api_ip_address_delete_destroy
+      summary: Delete Ip Address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/ip_check:
+    get:
+      operationId: api_ip_check_retrieve
+      summary: Get Security Check
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Check'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    put:
+      operationId: api_ip_check_update
+      summary: Update Security Check
+      tags:
+      - Admin Apis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Check'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Check'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Check'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leave:
+    post:
+      operationId: api_leave_create
+      summary: Apply Leave
+      tags:
+      - Leaves Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqLeave'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqLeave'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqLeave'
+        required: true
+      security:
+        token: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leave/{leave_id}:
+    put:
+      operationId: api_leave_update
+      summary: Update Leave
+      parameters:
+      - in: path
+        name: leave_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Leaves Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLeave'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateLeave'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateLeave'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leave/{leave_id}/:
+    delete:
+      operationId: api_leave_destroy
+      summary: Cancel Leave
+      parameters:
+      - in: path
+        name: leave_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leave_types:
+    get:
+      operationId: api_leave_types_list
+      summary: Get Leave Types
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaveType'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leaves:
+    get:
+      operationId: api_leaves_list
+      summary: Get Leaves
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leaves/{leave_id}:
+    get:
+      operationId: api_leaves_retrieve
+      summary: Get Leave By Id
+      parameters:
+      - in: path
+        name: leave_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/leaves/count:
+    get:
+      operationId: api_leaves_count_retrieve
+      summary: Get Count Leaves
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountLeaves'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/login:
+    post:
+      operationId: api_login_create
+      summary: Login User
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResUser'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/members/{project_id}/:
+    get:
+      operationId: api_members_list
+      summary: Get Members By Project Id
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/pending_leaves:
+    get:
+      operationId: api_pending_leaves_list
+      summary: Get Pending Leaves
+      tags:
+      - Leaves Management
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Leave'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/project:
+    post:
+      operationId: api_project_create
+      summary: Create Project
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqProject'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqProject'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqProject'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/project/{project_id}:
+    get:
+      operationId: api_project_retrieve
+      summary: Get Project By Id
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    put:
+      operationId: api_project_update
+      summary: Update Project By Id
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqProject'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqProject'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqProject'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    delete:
+      operationId: api_project_destroy
+      summary: Update Project By Id
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/project/member/{project_id}/{member_id}:
+    delete:
+      operationId: api_project_member_destroy
+      summary: Remove Member From Project By Id
+      parameters:
+      - in: path
+        name: member_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/projects:
+    get:
+      operationId: api_projects_list
+      summary: Get Projects By User Id
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+          description: ''
+  /api/register:
+    post:
+      operationId: api_register_create
+      summary: Register User
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResUser'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/reject_leave/{id}:
+    delete:
+      operationId: api_reject_leave_destroy
+      summary: Reject Leave
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/reset_password:
+    put:
+      operationId: api_reset_password_update
+      summary: Reset Password
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/room:
+    get:
+      operationId: api_room_retrieve
+      summary: Get Admin User Id
+      tags:
+      - Projects
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResRoom'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/screenshots/{user_id}/{start_date}/{end_date}:
+    get:
+      operationId: api_screenshots_list
+      summary: Get ScreenShot
+      parameters:
+      - in: path
+        name: end_date
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: start_date
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResWorkReport'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/screenshots/{work_report_id}/{date}:
+    get:
+      operationId: api_screenshots_list_2
+      summary: Get ScreenShot
+      parameters:
+      - in: path
+        name: date
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: work_report_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Apis
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScreenShot'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/task/{project_id}:
+    post:
+      operationId: api_task_create
+      summary: Create Task
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqTask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqTask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqTask'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/task/{task_id}/:
+    get:
+      operationId: api_task_retrieve
+      summary: Get Task By Id
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Tasks
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/task/remove/{task_id}:
+    delete:
+      operationId: api_task_remove_destroy
+      summary: Delete Task By Id
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Tasks
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/tasks:
+    get:
+      operationId: api_tasks_list
+      summary: Get All Tasks
+      tags:
+      - Tasks
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/tasks/{project_id}:
+    get:
+      operationId: api_tasks_list_2
+      summary: Get Task By Project Id
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Tasks
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/tasks/user:
+    get:
+      operationId: api_tasks_user_list
+      summary: Get All Tasks By User
+      tags:
+      - Tasks
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/update_task/{task_id}:
+    put:
+      operationId: api_update_task_update
+      summary: Update Task By Id
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Tasks
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/upload_image/{work_report_id}:
+    post:
+      operationId: api_upload_image_create
+      summary: Post ScreenShot
+      parameters:
+      - in: path
+        name: work_report_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Work Report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqScreenShot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqScreenShot'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqScreenShot'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScreenShot'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/users:
+    get:
+      operationId: api_users_list
+      summary: Get All Users
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResUser'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/work-reports/:
+    get:
+      operationId: api_work_reports_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkReportList'
+          description: ''
+  /api/work-reports/{id}/:
+    get:
+      operationId: api_work_reports_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this work report.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkReport'
+          description: ''
+  /api/work_report:
+    get:
+      operationId: api_work_report_list
+      summary: Get Work Report
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkReport'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+    post:
+      operationId: api_work_report_create
+      summary: Create Work Report
+      tags:
+      - Work Report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqWorkReport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReqWorkReport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReqWorkReport'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkReport'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/work_report/{id}:
+    put:
+      operationId: api_work_report_update
+      summary: Update Work Report
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Work Report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateWorkReport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/updateWorkReport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/updateWorkReport'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkReport'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/work_reports:
+    get:
+      operationId: api_work_reports_list_2
+      summary: Get All Work Report
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkReportResponse'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /api/work_reports/{start_date}/{end_date}:
+    get:
+      operationId: api_work_reports_list_3
+      summary: Get All Work Report
+      parameters:
+      - in: path
+        name: end_date
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: start_date
+        schema:
+          type: string
+        required: true
+      tags:
+      - Work Report
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkReportResponse'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
+  /groups/:
+    get:
+      operationId: groups_list
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - groups
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsersList'
+          description: ''
+    post:
+      operationId: groups_create
+      description: API endpoint that allows groups to be viewed or edited.
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Users'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Users'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+  /groups/{id}/:
+    get:
+      operationId: groups_retrieve
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+    put:
+      operationId: groups_update
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Users'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Users'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+    patch:
+      operationId: groups_partial_update
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsers'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+    delete:
+      operationId: groups_destroy
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /users/:
+    get:
+      operationId: users_list
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsersList'
+          description: ''
+    post:
+      operationId: users_create
+      description: API endpoint that allows users to be viewed or edited.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Users'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Users'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+  /users/{id}/:
+    get:
+      operationId: users_retrieve
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+    put:
+      operationId: users_update
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Users'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Users'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsers'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: ''
+    delete:
+      operationId: users_destroy
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        access_token:
+          type: string
+      required:
+      - access_token
+    BankDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employee:
+          $ref: '#/components/schemas/Employee'
+        bank_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        account_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        ifsc_code:
+          type: string
+          nullable: true
+          maxLength: 255
+        branch_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - employee
+      - id
+      - updated_at
+    Check:
+      type: object
+      properties:
+        status:
+          type: boolean
+      required:
+      - status
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        comment:
+          type: string
+          nullable: true
+          maxLength: 1000
+        image:
+          type: string
+          format: uri
+          nullable: true
+        user:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - created_at
+      - id
+      - updated_at
+      - user
+    CountLeaves:
+      type: object
+      properties:
+        pending_leaves:
+          type: integer
+        approved_leaves:
+          type: integer
+        cancelled_leaves:
+          type: integer
+      required:
+      - approved_leaves
+      - cancelled_leaves
+      - pending_leaves
+    DurationEnum:
+      enum:
+      - Full Day
+      - First Half
+      - Second Half
+      type: string
+      description: |-
+        * `Full Day` - Full Day
+        * `First Half` - First Half
+        * `Second Half` - Second Half
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/Users'
+        bank_detail:
+          type: string
+          readOnly: true
+        address:
+          type: string
+          nullable: true
+          maxLength: 455
+        employee_id:
+          type: string
+          nullable: true
+          maxLength: 455
+        designation:
+          type: string
+          nullable: true
+          maxLength: 455
+        department:
+          type: string
+          nullable: true
+          maxLength: 455
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 455
+        dob:
+          type: string
+          format: date
+          nullable: true
+        status:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmployeeStatusEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - bank_detail
+      - created_at
+      - id
+      - updated_at
+      - user
+    EmployeeStatusEnum:
+      enum:
+      - Active
+      - Inactive
+      type: string
+      description: |-
+        * `Active` - Active
+        * `Inactive` - Inactive
+    Error:
+      type: object
+      properties:
+        err_message:
+          type: string
+      required:
+      - err_message
+    ForgotPassword:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    IpAddress:
+      type: object
+      properties:
+        ip_address:
+          type: string
+          maxLength: 255
+      required:
+      - ip_address
+    IpAddressResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ip_address:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - ip_address
+      - updated_at
+    Leave:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+          maxLength: 1000
+        leave_type:
+          $ref: '#/components/schemas/LeaveType'
+        status:
+          $ref: '#/components/schemas/LeaveStatusEnum'
+        user:
+          $ref: '#/components/schemas/User'
+        duration:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        cancel_reason:
+          type: string
+          nullable: true
+          maxLength: 1000
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - leave_type
+      - start_date
+      - updated_at
+      - user
+    LeaveCount:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        casual_leave:
+          type: string
+          maxLength: 255
+        medical_leave:
+          type: string
+          maxLength: 255
+        available_paid_leave:
+          type: string
+        unpaid_leave:
+          type: string
+          maxLength: 255
+        carry_forward_leave:
+          type: string
+          maxLength: 255
+        month:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - month
+      - updated_at
+      - user
+    LeaveStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Rejected
+      - Cancelled
+      type: string
+      description: |-
+        * `Pending` - Pending
+        * `Approved` - Approved
+        * `Rejected` - Rejected
+        * `Cancelled` - Cancelled
+    LeaveType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        leave_type:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - leave_type
+      - updated_at
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+      - message
+    NullEnum:
+      enum:
+      - null
+    PaginatedUsersList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+    PaginatedWorkReportList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkReport'
+    PatchedChangePassword:
+      type: object
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+        new_password:
+          type: string
+          writeOnly: true
+    PatchedUsers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        role:
+          type: string
+          readOnly: true
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+          maxLength: 500
+        created_by:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        favorite_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        status:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/ProjectStatusEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - created_at
+      - created_by
+      - favorite_by
+      - id
+      - members
+      - updated_at
+    ProjectStatusEnum:
+      enum:
+      - OnGoing
+      - Expired
+      - Completed
+      type: string
+      description: |-
+        * `OnGoing` - OnGoing
+        * `Expired` - Expired
+        * `Completed` - Completed
+    ReqBankDetail:
+      type: object
+      properties:
+        account_number:
+          type: string
+          maxLength: 455
+        ifsc_code:
+          type: string
+          maxLength: 455
+        branch_name:
+          type: string
+          maxLength: 455
+        bank_name:
+          type: string
+          maxLength: 455
+      required:
+      - account_number
+      - bank_name
+      - branch_name
+      - ifsc_code
+    ReqComment:
+      type: object
+      properties:
+        comment:
+          type: string
+          nullable: true
+          maxLength: 1000
+        image:
+          type: string
+          format: uri
+    ReqEmployee:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          maxLength: 455
+        username:
+          type: string
+          maxLength: 455
+        password:
+          type: string
+          maxLength: 455
+        department:
+          type: string
+          maxLength: 455
+        designation:
+          type: string
+          maxLength: 455
+        phone_number:
+          type: string
+          maxLength: 455
+        status:
+          type: string
+          maxLength: 455
+        address:
+          type: string
+          maxLength: 455
+        dob:
+          type: string
+          format: date
+        id:
+          type: string
+          maxLength: 455
+        employee_id:
+          type: string
+          maxLength: 455
+      required:
+      - address
+      - department
+      - designation
+      - dob
+      - email
+      - employee_id
+      - id
+      - password
+      - phone_number
+      - role
+      - status
+      - username
+    ReqLeave:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+          maxLength: 1000
+        leave_type:
+          type: integer
+          nullable: true
+        duration:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - start_date
+    ReqProject:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+          maxLength: 500
+        members_ids:
+          type: array
+          items:
+            type: integer
+    ReqScreenShot:
+      type: object
+      properties:
+        screenshot:
+          type: string
+          format: uri
+        webcam_image:
+          type: string
+          format: uri
+        captured_at:
+          type: string
+          format: date-time
+      required:
+      - captured_at
+      - screenshot
+      - webcam_image
+    ReqTask:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+          maxLength: 1000
+        assigned_to:
+          type: array
+          items:
+            type: integer
+        due_date:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Status58dEnum'
+          - $ref: '#/components/schemas/NullEnum'
+    ReqWorkReport:
+      type: object
+      properties:
+        start_time:
+          type: string
+          format: date-time
+        project:
+          type: integer
+        task:
+          type: integer
+        description:
+          type: string
+      required:
+      - description
+      - project
+      - start_time
+      - task
+    ResRoom:
+      type: object
+      properties:
+        room:
+          type: string
+      required:
+      - room
+    ResUser:
+      type: object
+      properties:
+        role:
+          type: string
+        token:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        id:
+          type: integer
+      required:
+      - email
+      - id
+      - role
+      - token
+      - username
+    ResWorkReport:
+      type: object
+      properties:
+        work_report:
+          $ref: '#/components/schemas/WorkReport'
+        screen_shots:
+          $ref: '#/components/schemas/WorkScreenShot'
+      required:
+      - screen_shots
+      - work_report
+    ResetPassword:
+      type: object
+      properties:
+        new_password:
+          type: string
+          writeOnly: true
+        id:
+          type: string
+        token:
+          type: string
+      required:
+      - id
+      - new_password
+      - token
+    ScreenShot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        work_report:
+          $ref: '#/components/schemas/WorkReport'
+        screenshot:
+          type: string
+          format: uri
+          nullable: true
+        webcam_image:
+          type: string
+          format: uri
+          nullable: true
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - updated_at
+      - user
+      - work_report
+    Status58dEnum:
+      enum:
+      - Todo
+      - In Progress
+      - Completed
+      - Expired
+      type: string
+      description: |-
+        * `Todo` - Todo
+        * `In Progress` - In Progress
+        * `Completed` - Completed
+        * `Expired` - Expired
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        assigned_to:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        created_by:
+          $ref: '#/components/schemas/User'
+        project:
+          $ref: '#/components/schemas/Project'
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        due_date:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+          nullable: true
+          maxLength: 1000
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        status:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Status58dEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - assigned_to
+      - created_at
+      - created_by
+      - id
+      - project
+      - updated_at
+    UpdateLeave:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        reason:
+          type: string
+          nullable: true
+          maxLength: 1000
+        duration:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - start_date
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+      required:
+      - id
+      - username
+    UserRegister:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+        role:
+          type: string
+      required:
+      - email
+      - password
+      - role
+      - username
+    Users:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        role:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - role
+      - username
+    WorkReport:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        project:
+          $ref: '#/components/schemas/Project'
+        task:
+          $ref: '#/components/schemas/Task'
+        start_time:
+          type: string
+          format: date-time
+          nullable: true
+        end_time:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - project
+      - task
+      - updated_at
+      - user
+    WorkReportResponse:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkReport'
+        count:
+          type: integer
+      required:
+      - count
+      - date
+      - reports
+    WorkScreenShot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        work_report:
+          $ref: '#/components/schemas/WorkReport'
+        screenshot:
+          type: string
+          format: uri
+          nullable: true
+        webcam_image:
+          type: string
+          format: uri
+          nullable: true
+        captured_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - updated_at
+      - user
+      - work_report
+    updateWorkReport:
+      type: object
+      properties:
+        end_time:
+          type: string
+          format: date-time
+        description:
+          type: string
+      required:
+      - description
+      - end_time
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
