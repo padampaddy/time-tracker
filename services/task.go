@@ -30,7 +30,7 @@ func NewTaskService() *TaskService {
 
 // GetUserTasks fetches all tasks for the authenticated user
 func (s *TaskService) GetUserTasks() ([]types.Task, error) {
-	response, err := s.apiClient.CallAPI("/api/tasks/user", "GET", nil)
+	response, err := s.apiClient.CallAPIForArray("/api/tasks/user", "GET", nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch tasks: %w", err)
 	}

@@ -232,3 +232,62 @@ func (c *ApiClient) UploadFile(endpoint, method, fieldName, fileName string, fil
 
 	return result, nil
 }
+
+// CallAPIForArray makes an API call and expects a JSON array response
+func (c *ApiClient) CallAPIForArray(endpoint, method string, data map[string]interface{}) ([]interface{}, error) {
+	url := c.BaseURL + endpoint
+
+	var req *http.Request
+	var err error
+
+	if data != nil {
+		jsonData, _ := json.Marshal(data)
+		req, err = http.NewRequest(method, url, bytes.NewBuffer(jsonData))
+	} else {
+		req, err = http.NewRequest(method, url, nil)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	if c.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+c.Token)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusUnauthorized {
+		println("Unauthorized. Removing token file.")
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return nil, errors.New("unable to determine user home directory")
+		}
+		tokenPath := filepath.Join(homeDir, ".time-tracker", ".token")
+		os.Remove(tokenPath)
+		c.Token = ""
+		return nil, errors.New("unauthorized")
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, errors.New("API call failed with status: " + resp.Status)
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []interface{}
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

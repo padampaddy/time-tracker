@@ -167,14 +167,12 @@ func (ui *TaskWindowUI) loadTasks() {
 			}
 
 			ui.taskSelect.Options = taskDisplays
-			fyne.Do(func() {
-				ui.taskSelect.ClearSelected()
-				ui.selectedTask = nil
-				ui.taskSelect.Enable()
-				ui.refreshButton.Enable()
-				ui.taskSelect.Refresh()
-				log.Println("Tasks refreshed")
-			})
+			ui.taskSelect.ClearSelected()
+			ui.selectedTask = nil
+			ui.taskSelect.Enable()
+			ui.refreshButton.Enable()
+			ui.taskSelect.Refresh()
+			log.Println("Tasks refreshed")
 		})
 	}()
 }
