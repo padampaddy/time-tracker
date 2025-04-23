@@ -4,7 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"image"
+	"image/color"
+	"image/png"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
 
@@ -111,7 +115,7 @@ func (s *TaskService) StopUserTask(workReportID int, endTime string, description
 	return &workReport, nil
 }
 
-// UploadScreenshot uploads a screenshot for a specific work report
+// UploadScreenshot uploads a screenshot and webcam image for a specific work report
 func (s *TaskService) UploadScreenshot(workReportID int, screenshotData []byte, filename string) error {
 	// Construct the API endpoint URL
 	url := fmt.Sprintf("/api/upload_image/%d", workReportID)
@@ -128,6 +132,16 @@ func (s *TaskService) UploadScreenshot(workReportID int, screenshotData []byte, 
 	_, err = io.Copy(part, bytes.NewReader(screenshotData))
 	if err != nil {
 		return fmt.Errorf("failed to copy screenshot data: %w", err)
+	}
+
+	// Add the webcam image file part
+	webcamPart, err := writer.CreateFormFile("webcam_image", "webcam.png")
+	if err != nil {
+		return fmt.Errorf("failed to create webcam form file: %w", err)
+	}
+	_, err = io.Copy(webcamPart, bytes.NewReader(createBlackPNG()))
+	if err != nil {
+		return fmt.Errorf("failed to copy webcam image data: %w", err)
 	}
 
 	// Close the multipart writer
@@ -159,4 +173,26 @@ func (s *TaskService) UploadScreenshot(workReportID int, screenshotData []byte, 
 
 	// Screenshot uploaded successfully
 	return nil
+}
+
+// createBlackPNG generates a 100x100 all-black PNG image and returns its byte representation
+func createBlackPNG() []byte {
+	const width, height = 100, 100 // Dimensions of the black PNG
+
+	// Create a black image
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			img.Set(x, y, color.Black)
+		}
+	}
+
+	// Encode the image to PNG format
+	buf := &bytes.Buffer{}
+	err := png.Encode(buf, img)
+	if err != nil {
+		log.Fatalf("failed to encode black PNG: %v", err)
+	}
+
+	return buf.Bytes()
 }

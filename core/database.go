@@ -18,7 +18,13 @@ func NewDatabase(dbFile string) *Database {
 	if dbFile == "" {
 		dbFile = "time_tracker.db"
 	}
-	dbDir := filepath.Join(os.Getenv("HOME"), ".time-tracker")
+
+	var dbDir string
+	if homeDir, err := os.UserHomeDir(); err == nil {
+		dbDir = filepath.Join(homeDir, ".time-tracker")
+	} else {
+		panic(fmt.Sprintf("Failed to determine user home directory: %v", err))
+	}
 	err := os.MkdirAll(dbDir, os.ModePerm)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to create database directory: %v", err))

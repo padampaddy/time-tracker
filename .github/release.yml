@@ -1,0 +1,101 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - "v*" # Matches tags starting with 'v'
+
+permissions:
+  contents: write # This is required for creating releases
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            output: rn-builder-linux
+            goos: linux
+          - os: windows-latest
+            output: rn-builder-windows.exe
+            goos: windows
+          - os: macos-latest
+            output: rn-builder-macos
+            goos: darwin
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Install dependencies
+      run: go mod tidy
+
+    - name: Install Linux dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev
+
+    - name: Install macOS dependencies
+      if: matrix.os == 'macos-latest'
+      run: brew install gcc
+
+    - name: Install Windows dependencies
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        choco install -y mingw
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        Write-Host "Updated PATH: $env:Path"
+
+    - name: Build
+      shell: bash
+      if: matrix.os != 'windows-latest'
+      run: |
+        CGO_ENABLED=1 GOOS=${{ matrix.goos }} go build -tags gl -o ${{ matrix.output }}
+
+    - name: Build Windows
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        $env:CGO_ENABLED=1
+        $env:GOOS="${{ matrix.goos }}"
+        $env:CC="gcc"
+        # Ensure MinGW is in the PATH
+        $env:Path = "C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw64\bin;$env:Path"
+        Write-Host "gcc version:"
+        gcc --version
+        Write-Host "Building..."
+        go build -tags gl -o ${{ matrix.output }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.output }}
+        path: ${{ matrix.output }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          */go-tracker-linux
+          */go-tracker.exe
+          */go-tracker-macos
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
