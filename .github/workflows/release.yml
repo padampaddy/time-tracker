@@ -59,7 +59,6 @@ jobs:
         choco install -y mingw
         $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
         Write-Host "Updated PATH: $env:Path"
-        winget install MartinStorsjo.LLVM-MinGW.UCRT -s winget --accept-package-agreements --accept-source-agreements
 
     - name: Build
       shell: bash
