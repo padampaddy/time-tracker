@@ -31,7 +31,7 @@ func NewActivityTracker(screenshotDir string, taskManager *TaskManager) *Activit
 		StartTime:         nil,
 		EndTime:           nil,
 		Database:          NewDatabase("time_tracker.db"),
-		ScreenshotManager: NewScreenshotManager(10, taskManager),
+		ScreenshotManager: NewScreenshotManager(600, taskManager),
 		InputMonitor:      NewInputMonitor(),
 		screenshotDir:     screenshotDir,
 		taskManager:       taskManager,

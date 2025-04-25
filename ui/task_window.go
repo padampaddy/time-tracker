@@ -225,6 +225,9 @@ func (ui *TaskWindowUI) stopTimer() {
 		return
 	}
 
+	// Prevent multiple stop actions.
+	ui.isTimerRunning = false
+
 	log.Println("Stopping timer and activity tracking")
 
 	err := ui.activityTracker.StopTracking()
@@ -236,10 +239,15 @@ func (ui *TaskWindowUI) stopTimer() {
 
 	go func() {
 		if ui.ticker != nil {
+			// Safely close ui.stopTicker to avoid double-close panics.
+			defer func() {
+				if r := recover(); r != nil {
+					log.Println("Recovered from closing ui.stopTicker:", r)
+				}
+			}()
 			close(ui.stopTicker)
 		}
 		fyne.Do(func() {
-			ui.isTimerRunning = false
 			ui.updateUIForStop()
 			ui.timerLabel.SetText("00:00:00")
 			ui.updateScreenshotsList()
